@@ -1,0 +1,51 @@
+
+traj_sde-run-janusgraph-image.json:
+[
+  "execute_bash(command='mkdir -p /workspace/python-project && cd /workspace/python-project && git init')",
+  "write_file(path='/workspace/python-project/README.md')",
+  "write_file(path='/workspace/python-project/requirements.txt')",
+  "write_file(path='/workspace/python-project/app.py')",
+  "write_file(path='/workspace/python-project/test_app.py')",
+  "execute_bash(command='cd /workspace/python-project && git add . && git commit -m \"Initial commit\" && git config --global user.email \"openhands@all-hands.dev\" && git config --global user.name \"openhands\" && git remote add origin https://root:theagentcompany@gitlab.com/all-hands-openhands/python-project.git && git push -u origin master')",
+  "execute_bash(command='cd /workspace/python-project && python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt && pytest')",
+  "write_file(path='/workspace/python-project/test_app.py')",
+  "execute_bash(command='cd /workspace/python-project && source .venv/bin/activate && pytest')",
+  "write_file(path='/workspace/python-project/test_app.py')",
+  "execute_bash(command='cd /workspace/python-project && source .venv/bin/activate && pytest')",
+  "finish()"
+]
+
+traj_pm-schedule-meeting-2-image-claude.json:
+[
+  "goto_url(url='http://the-agent-company.com:3000/home')",
+  "send_message(recipient='Emily', content='Hello Emily, I need to schedule a meeting between you and Liu Qiang during regular business hours on a workday (Monday-Friday). Could you please let me know your free time this week?')",
+  "send_message(content='liu_qiang')",
+  "send_message(recipient='Liu Qiang', content='Hello Liu Qiang, I need to schedule a meeting between you and Emily Zhou during regular business hours on a workday (Monday-Friday). Could you please let me know your free time this week?')",
+  "execute_bash(command='echo \"Meeting scheduled for Friday during regular business hours.\" > /workspace/conclusion.txt')",
+  "execute_bash(command='cat /workspace/conclusion.txt')",
+  "send_message(content='Based on both of your availabilities, I have scheduled the meeting for Friday during regular business hours. Thank you for your prompt response!')",
+  "send_message(content='Based on both of your availabilities, I have scheduled the meeting for Friday during regular business hours. Thank you for your prompt response!')",
+  "finish()"
+]
+
+traj_hr-new-grad-job-description-3-image.json:
+[
+  "read_file(path='/instruction/task.md')",
+  "goto_url(url='http://the-agent-company.com:3000/home')",
+  "send_message(content='Zhang Wei')",
+  "send_message(content='Zhang Wei')",
+  "send_message(recipient='Zhang Wei', content='Hello Zhang Wei, could you please tell me the key job responsibilities for the new grad software engineer position?')",
+  "goto_url(url='http://the-agent-company.com:3000/direct/xZ8bF7STZ7onWjEAp')",
+  "goto_url(url='http://the-agent-company.com:3000/directory/users')",
+  "send_message(content='Li Ming')",
+  "send_message(recipient='Li Ming', content='Hello Li Ming, could you please tell me the location of the job description template file, the minimum and preferred qualifications for the new grad software engineer position, and the expected salary range?')",
+  "read_file(path='/instruction/template.md')",
+  "goto_url(url='http://the-agent-company.com:3000/direct/CZYWHd5bCmhj5YcFeuPsPimbJGg5gK3Eut')",
+  "write_file(path='/Documents/job_description.md')",
+  "goto_url(url='http://the-agent-company.com:8092/')",
+  "goto_url(url='http://the-agent-company.com:8092/index.php/apps/files/?dir=/Documents&fileid=14')",
+  "goto_url(url='http://the-agent-company.com:8092/index.php/apps/files/?dir=/&fileid=4')",
+  "goto_url(url='http://the-agent-company.com:8092/index.php/apps/files/?dir=/Documents&fileid=14')",
+  "write_file(path='/workspace/job_description.md')",
+  "finish()"
+]
