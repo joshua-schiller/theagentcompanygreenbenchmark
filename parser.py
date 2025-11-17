@@ -128,11 +128,17 @@ def parse_trajectory(json_log_path):
 
 
 if __name__ == '__main__':
-    # List of example JSON files
     json_files = [
+        'traj_pm-schedule-meeting-1-image.json',
         'traj_sde-run-janusgraph-image.json',
-        'traj_pm-schedule-meeting-2-image-claude.json',
-        'traj_hr-new-grad-job-description-3-image.json'
+        'traj_hr-new-grad-job-description-3-image.json',
+        'traj_sde-create-new-repo-image.json',
+        'traj_pm-send-hello-message-image.json',
+        'traj_finance-qualified-bill-ask-for-reimburse-image.json',
+        'traj_ds-janusgraph-exercise-image.json',
+        'traj_ml-generate-gradcam-image.json',
+        'traj_research-answer-questions-on-paper-image.json',
+        'traj_qa-escalate-emergency-image.json'
     ]
     
     # Output file name
@@ -150,6 +156,10 @@ if __name__ == '__main__':
                 print(output_json)
                 out_f.write(output_json)
                 out_f.write("\n")
+            except FileNotFoundError:
+                error_msg = f"File not found: {filename} (skipping)"
+                print(error_msg)
+                out_f.write(error_msg + "\n")
             except Exception as e:
                 error_msg = f"Error processing {filename}: {e}"
                 print(error_msg)
