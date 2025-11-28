@@ -1,0 +1,48 @@
+{
+  "task_name": "ds-janusgraph-exercise",
+  "suggested_golden_path": [
+    "execute_bash(command='mkdir -p /workspace/python-project && cd /workspace/python-project && git init')",
+    "execute_bash(command='cd /workspace/python-project && git add . && git commit -m \"Initial commit\" && git remote add origin https://root:theagentcompany@gitlab.com/all-hands-openhands/python-project.git && git push -u origin master')",
+    "write_file(path='/workspace/python-project/README.md')",
+    "write_file(path='/workspace/python-project/requirements.txt')",
+    "execute_bash(command='cd /workspace && python create_org_chart.py')",
+    "finish()"
+  ],
+  "matches": [
+    {
+      "canonical": "execute_bash(command='cd /workspace && git clone http://the-agent-company.com:8929/root/janusgraph')",
+      "matched": "execute_bash(command='mkdir -p /workspace/python-project && cd /workspace/python-project && git init')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "execute_bash(command='cd /workspace/janusgraph && [start server]')",
+      "matched": "execute_bash(command='cd /workspace/python-project && git add . && git commit -m \"Initial commit\" && git remote add origin https://root:theagentcompany@gitlab.com/all-hands-openhands/python-project.git && git push -u origin master')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "read_file(path='/workspace/employee_diagram.jpg')",
+      "matched": "write_file(path='/workspace/python-project/README.md')",
+      "similarity": 0.8648648648648649
+    },
+    {
+      "canonical": "write_file(path='/workspace/create_org_chart.py')",
+      "matched": "write_file(path='/workspace/python-project/requirements.txt')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "execute_bash(command='cd /workspace && python create_org_chart.py')",
+      "matched": null,
+      "similarity": 0.0
+    },
+    {
+      "canonical": "finish()",
+      "matched": "finish()",
+      "similarity": 1.0
+    }
+  ],
+  "unmatched_parsed_actions": [
+    "write_file(path='/workspace/python-project/app.py')",
+    "write_file(path='/workspace/python-project/test_app.py')"
+  ],
+  "parsed_action_count": 7
+}

@@ -1,0 +1,68 @@
+{
+  "task_name": "hr-new-grad-job-description-3",
+  "suggested_golden_path": [
+    "goto_url(url='http://the-agent-company.com:3000/home')",
+    "send_message(recipient='Zhang Wei', content='Hello Zhang Wei, could you please tell me the key job responsibilities for the new grad software engineer position?')",
+    "send_message(recipient='Li Ming', content='Hello Li Ming, could you please tell me the location of the job description template file, the minimum and preferred qualifications for the new grad software engineer position, and the expected salary range?')",
+    "read_file(path='/instruction/task.md')",
+    "goto_url(url='http://the-agent-company.com:3000/direct/xZ8bF7STZ7onWjEAp')",
+    "write_file(path='/Documents/job_description.md')",
+    "write_file(path='/workspace/job_description.md')",
+    "finish()"
+  ],
+  "matches": [
+    {
+      "canonical": "goto_url(url='http://the-agent-company.com:3000/home')",
+      "matched": "goto_url(url='http://the-agent-company.com:3000/home')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "send_message(recipient='Zhang Wei', content='...')",
+      "matched": "send_message(recipient='Zhang Wei', content='Hello Zhang Wei, could you please tell me the key job responsibilities for the new grad software engineer position?')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "send_message(recipient='Li Ming', content='...')",
+      "matched": "send_message(recipient='Li Ming', content='Hello Li Ming, could you please tell me the location of the job description template file, the minimum and preferred qualifications for the new grad software engineer position, and the expected salary range?')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "read_file()",
+      "matched": "read_file(path='/instruction/task.md')",
+      "similarity": 0.7586206896551724
+    },
+    {
+      "canonical": "goto_url(url='http://the-agent-company.com:8092/')",
+      "matched": "goto_url(url='http://the-agent-company.com:3000/direct/xZ8bF7STZ7onWjEAp')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "write_file(path='/Documents/job_description.md')",
+      "matched": "write_file(path='/Documents/job_description.md')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "write_file(path='/workspace/link.txt')",
+      "matched": "write_file(path='/workspace/job_description.md')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "finish()",
+      "matched": "finish()",
+      "similarity": 1.0
+    }
+  ],
+  "unmatched_parsed_actions": [
+    "send_message(content='Zhang Wei')",
+    "send_message(content='Zhang Wei')",
+    "goto_url(url='http://the-agent-company.com:3000/directory/users')",
+    "send_message(content='Li Ming')",
+    "read_file(path='/instruction/template.md')",
+    "goto_url(url='http://the-agent-company.com:3000/direct/CZYWHd5bCmhj5YcFeuPsPimbJGg5gK3Eut')",
+    "goto_url(url='http://the-agent-company.com:8092/')",
+    "goto_url(url='http://the-agent-company.com:8092/index.php/apps/files/?dir=/Documents&fileid=14')",
+    "goto_url(url='http://the-agent-company.com:8092/index.php/apps/files/?dir=/&fileid=4')",
+    "goto_url(url='http://the-agent-company.com:8092/index.php/apps/files/?dir=/Documents&fileid=14')"
+  ],
+  "parsed_action_count": 18
+}

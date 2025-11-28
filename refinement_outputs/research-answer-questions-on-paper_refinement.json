@@ -1,0 +1,41 @@
+{
+  "task_name": "research-answer-questions-on-paper",
+  "suggested_golden_path": [
+    "goto_url(url='http://the-agent-company.com:8092')",
+    "read_file(path='/Documents/Research/Noise Simulation/noise_simulation_paper.pdf')",
+    "read_file(path='/Documents/Research/Noise Simulation/noise_simulation_analysis_sheet.txt')",
+    "write_file(path='/workspace/noise_simulation_analysis_sheet.txt') [answers]",
+    "finish()"
+  ],
+  "matches": [
+    {
+      "canonical": "goto_url(url='http://the-agent-company.com:8092/')",
+      "matched": "goto_url(url='http://the-agent-company.com:8092')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "read_file(path='/Documents/Research/Noise Simulation/noise_simulation_paper.pdf')",
+      "matched": null,
+      "similarity": 0.0
+    },
+    {
+      "canonical": "read_file(path='/Documents/Research/Noise Simulation/noise_simulation_analysis_sheet.txt')",
+      "matched": null,
+      "similarity": 0.0
+    },
+    {
+      "canonical": "write_file(path='/workspace/noise_simulation_analysis_sheet.txt') [answers]",
+      "matched": null,
+      "similarity": 0.0
+    },
+    {
+      "canonical": "finish()",
+      "matched": null,
+      "similarity": 0.0
+    }
+  ],
+  "unmatched_parsed_actions": [
+    "execute_bash(command='cat /instruction/task.md')"
+  ],
+  "parsed_action_count": 2
+}

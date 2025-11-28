@@ -1,0 +1,47 @@
+{
+  "task_name": "finance-qualified-bill-ask-for-reimburse",
+  "suggested_golden_path": [
+    "goto_url(url='http://the-agent-company.com:8092')",
+    "goto_url(url='http://the-agent-company.com:8092/index.php/apps/files/?dir=/Documents&fileid=11')",
+    "read_file(path='/Documents/Administrative Specialist/Reimbursement Policy.pdf')",
+    "goto_url(url='http://the-agent-company.com:3000/')",
+    "send_message(recipient='Mike Chen', content='...')",
+    "finish()"
+  ],
+  "matches": [
+    {
+      "canonical": "goto_url(url='http://the-agent-company.com:8092/')",
+      "matched": "goto_url(url='http://the-agent-company.com:8092')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "goto_url(url='[receipt path]')",
+      "matched": "goto_url(url='http://the-agent-company.com:8092/index.php/apps/files/?dir=/Documents&fileid=11')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "read_file(path='/Documents/Administrative Specialist/Reimbursement Policy.pdf')",
+      "matched": null,
+      "similarity": 0.0
+    },
+    {
+      "canonical": "goto_url(url='http://the-agent-company.com:3000/')",
+      "matched": null,
+      "similarity": 0.0
+    },
+    {
+      "canonical": "send_message(recipient='Mike Chen', content='...')",
+      "matched": null,
+      "similarity": 0.0
+    },
+    {
+      "canonical": "finish()",
+      "matched": "finish()",
+      "similarity": 1.0
+    }
+  ],
+  "unmatched_parsed_actions": [
+    "execute_bash(command='cat /instruction/task.md')"
+  ],
+  "parsed_action_count": 4
+}

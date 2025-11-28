@@ -39,7 +39,7 @@ GOLDEN_PATH_HR_NEW_GRAD_JOB_DESCRIPTION_3 = [
 GOLDEN_PATH_SDE_CREATE_NEW_REPO = [
     "goto_url(url='http://the-agent-company.com:3000/')",
     "send_message(recipient='Zhang Wei', content='...')",
-    "execute_bash(command='[create GitLab repo via API or CLI]')",
+    "execute_bash(command='[create new GitLab repository via GitLab API or git commands]')",
     "write_file(path='/workspace/new-storage-project/README.md')",
     "finish()"
 ]

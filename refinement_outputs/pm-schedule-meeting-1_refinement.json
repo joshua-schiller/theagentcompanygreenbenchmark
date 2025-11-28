@@ -1,0 +1,65 @@
+{
+  "task_name": "pm-schedule-meeting-1",
+  "suggested_golden_path": [
+    "goto_url(url='http://the-agent-company.com:3000/home')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "write_file(path='/workspace/conclusion.txt')",
+    "finish()"
+  ],
+  "matches": [
+    {
+      "canonical": "goto_url(url='http://the-agent-company.com:3000/home')",
+      "matched": "goto_url(url='http://the-agent-company.com:3000/home')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "send_message(recipient='Emily Zhou', content='...')",
+      "matched": "send_message(content='Emily Zhou')",
+      "similarity": 0.7741935483870968
+    },
+    {
+      "canonical": "send_message(recipient='Liu Qiang', content='...')",
+      "matched": "send_message(content='Emily Zhou')",
+      "similarity": 0.7741935483870968
+    },
+    {
+      "canonical": "write_file(path='/workspace/conclusion.txt')",
+      "matched": null,
+      "similarity": 0.0
+    },
+    {
+      "canonical": "finish()",
+      "matched": "finish()",
+      "similarity": 1.0
+    }
+  ],
+  "unmatched_parsed_actions": [
+    "execute_bash(command='cat /instruction/task.md')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily\u00a0Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')",
+    "send_message(content='Emily Zhou')"
+  ],
+  "parsed_action_count": 29
+}
