@@ -21,12 +21,33 @@ theagentcompanygreenbenchmark/
 ├── golden_paths.py        # Programmatic definitions of golden paths for all tasks
 ├── scoring.py             # Efficiency scoring algorithm
 ├── evaluator.py           # Main evaluation script
-├── golden_paths_english.md # Descriptions of golden paths
 ├── refine_golden_paths.py # Helper script for refining golden paths
+├── run_evaluation.sh      # Helper script for end-to-end evaluation
+├── Makefile               # Make targets for common operations
+├── GRADER_GUIDE.md        # Detailed guide for graders
+├── golden_paths_descriptions.md # Descriptions of golden paths
 └── README.md              # This file
 ```
 
 ## Usage
+
+### For Graders
+
+**Quick Start**: See [GRADER_GUIDE.md](GRADER_GUIDE.md) for detailed instructions on running the evaluator after white-agent runs.
+
+**Quick evaluation after TAC run:**
+```bash
+# Option 1: Using helper script
+./run_evaluation.sh /path/to/tac/outputs/results --output results.json
+
+# Option 2: Using Makefile
+make evaluate TRAJECTORY_DIR=/path/to/tac/outputs/results
+
+# Option 3: Direct Python command
+python evaluator.py /path/to/tac/outputs/results --output results.json --report
+```
+
+The evaluator automatically finds all `traj_*.json` files in the specified directory and can read directly from TAC output directories (mount paths or copied files).
 
 ### Basic Usage
 
@@ -40,6 +61,21 @@ Evaluate all trajectories in a directory:
 
 ```bash
 python evaluator.py /path/to/trajectories/ --output results.json
+```
+
+### Helper Scripts
+
+**run_evaluation.sh**: End-to-end evaluation script
+```bash
+./run_evaluation.sh /path/to/trajectories --output results.json --report
+```
+
+**Makefile**: Convenient targets for common operations
+```bash
+make evaluate TRAJECTORY_DIR=/path/to/trajectories
+make evaluate-single TRAJECTORY_FILE=traj_*.json
+make full-pipeline TRAJECTORY_DIR=/path/to/trajectories
+make list-tasks
 ```
 
 ### Command-Line Options
