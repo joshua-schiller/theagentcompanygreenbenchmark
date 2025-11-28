@@ -108,6 +108,8 @@ def main():
     parser.add_argument(
         'trajectory',
         type=str,
+        nargs='?',
+        default=None,
         help='Path to trajectory JSON file or directory containing trajectory files'
     )
     parser.add_argument(
@@ -140,6 +142,9 @@ def main():
         for task_name in get_all_task_names():
             print(f" {task_name}")
         return
+    
+    if args.trajectory is None:
+        parser.error("trajectory path is required (unless using --list-tasks)")
     
     input_path = Path(args.trajectory)
     
