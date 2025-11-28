@@ -1,0 +1,38 @@
+{
+  "task_name": "qa-escalate-emergency",
+  "suggested_golden_path": [
+    "goto_url(url='http://the-agent-company.com:3000/')",
+    "send_message(content='Zhang Wei')",
+    "send_message(recipient='Zhang Wei', content='Hello Zhang Wei, I found a severe security vulnerability in the codebase that could lead to our customers\\' confidential data leakage.  Please check it ASAP!')",
+    "finish()"
+  ],
+  "matches": [
+    {
+      "canonical": "goto_url(url='http://the-agent-company.com:3000/')",
+      "matched": "goto_url(url='http://the-agent-company.com:3000/')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "send_message(recipient='Zhang Wei', content='...')",
+      "matched": "send_message(content='Zhang Wei')",
+      "similarity": 0.7741935483870968
+    },
+    {
+      "canonical": "send_message(recipient='Sarah Johnson', content='...')",
+      "matched": "send_message(recipient='Zhang Wei', content='Hello Zhang Wei, I found a severe security vulnerability in the codebase that could lead to our customers\\' confidential data leakage.  Please check it ASAP!')",
+      "similarity": 0.6031746031746031
+    },
+    {
+      "canonical": "finish()",
+      "matched": "finish()",
+      "similarity": 1.0
+    }
+  ],
+  "unmatched_parsed_actions": [
+    "execute_bash(command='cat /instruction/task.md')",
+    "goto_url(url='http://the-agent-company.com:3000/direct/nSYjE9rW4i9E4g36x')",
+    "goto_url(url='http://the-agent-company.com:3000/direct/sarah_johnson')",
+    "send_message(recipient='Sarah Johnson', content='Hello Sarah Johnson, I found a severe security vulnerability in the codebase that could lead to our customers\\' confidential data leakage.  Please check it ASAP! I have already notified Zhang Wei but haven\\'t received a response yet.')"
+  ],
+  "parsed_action_count": 8
+}

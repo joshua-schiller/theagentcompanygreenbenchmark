@@ -1,0 +1,45 @@
+{
+  "task_name": "ml-generate-gradcam",
+  "suggested_golden_path": [
+    "goto_url(url='http://the-agent-company.com:8092')",
+    "read_file(path='/Documents/Research/test_image.jpg') or download",
+    "write_file(path='/workspace/gradcam_script.py')",
+    "execute_bash(command='cat /instruction/task.md')",
+    "write_file(path='/workspace/gradcam_explanation.txt')",
+    "finish()"
+  ],
+  "matches": [
+    {
+      "canonical": "goto_url(url='http://the-agent-company.com:8092/')",
+      "matched": "goto_url(url='http://the-agent-company.com:8092')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "read_file(path='/Documents/Research/test_image.jpg') or download",
+      "matched": null,
+      "similarity": 0.0
+    },
+    {
+      "canonical": "write_file(path='/workspace/gradcam_script.py')",
+      "matched": null,
+      "similarity": 0.0
+    },
+    {
+      "canonical": "execute_bash(command='cd /workspace && python gradcam_script.py')",
+      "matched": "execute_bash(command='cat /instruction/task.md')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "write_file(path='/workspace/gradcam_explanation.txt')",
+      "matched": null,
+      "similarity": 0.0
+    },
+    {
+      "canonical": "finish()",
+      "matched": "finish()",
+      "similarity": 1.0
+    }
+  ],
+  "unmatched_parsed_actions": [],
+  "parsed_action_count": 3
+}

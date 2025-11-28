@@ -1,0 +1,35 @@
+{
+  "task_name": "pm-send-hello-message",
+  "suggested_golden_path": [
+    "goto_url(url='http://the-agent-company.com:3000/home')",
+    "goto_url(url='[general channel URL]')",
+    "send_message(content='Hi \ud83d\ude18')",
+    "finish()"
+  ],
+  "matches": [
+    {
+      "canonical": "goto_url(url='http://the-agent-company.com:3000/home')",
+      "matched": "goto_url(url='http://the-agent-company.com:3000/home')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "goto_url(url='[general channel URL]')",
+      "matched": null,
+      "similarity": 0.0
+    },
+    {
+      "canonical": "send_message(content='... and @active_users')",
+      "matched": "send_message(content='Hi \ud83d\ude18')",
+      "similarity": 1.0
+    },
+    {
+      "canonical": "finish()",
+      "matched": "finish()",
+      "similarity": 1.0
+    }
+  ],
+  "unmatched_parsed_actions": [
+    "execute_bash(command='cat /instruction/task.md')"
+  ],
+  "parsed_action_count": 4
+}

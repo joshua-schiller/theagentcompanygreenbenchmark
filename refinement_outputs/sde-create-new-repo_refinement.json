@@ -1,0 +1,42 @@
+{
+  "task_name": "sde-create-new-repo",
+  "suggested_golden_path": [
+    "goto_url(url='http://the-agent-company.com:3000/')",
+    "send_message(recipient='Zhang Wei', content='...')",
+    "execute_bash(command='pwd && ls -l')",
+    "write_file(path='[repo path]/README.md')",
+    "finish()"
+  ],
+  "matches": [
+    {
+      "canonical": "goto_url(url='http://the-agent-company.com:3000/')",
+      "matched": null,
+      "similarity": 0.0
+    },
+    {
+      "canonical": "send_message(recipient='Zhang Wei', content='...')",
+      "matched": null,
+      "similarity": 0.0
+    },
+    {
+      "canonical": "execute_bash(command='[create repo command]') or API call",
+      "matched": "execute_bash(command='pwd && ls -l')",
+      "similarity": 0.8
+    },
+    {
+      "canonical": "write_file(path='[repo path]/README.md')",
+      "matched": null,
+      "similarity": 0.0
+    },
+    {
+      "canonical": "finish()",
+      "matched": "finish()",
+      "similarity": 1.0
+    }
+  ],
+  "unmatched_parsed_actions": [
+    "execute_bash(command='mkdir -p /outputs/hands-on-ml3 && cd /outputs/hands-on-ml3 && git clone https://root:theagentcompany@gitlab.com/the-agent-company/hands-on-ml3.git')",
+    "execute_bash(command='cd /outputs && mkdir -p hands-on-ml3 && cd hands-on-ml3 && git clone https://oauth2:YOUR_GITLAB_ACCESS_TOKEN@gitlab.com/the-agent-company/hands-on-ml3.git')"
+  ],
+  "parsed_action_count": 4
+}
