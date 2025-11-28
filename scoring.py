@@ -22,13 +22,62 @@ def normalize_action_for_matching(action: str) -> str:
     action_type = action_type_match.group(1)
     
     if action_type == 'execute_bash':
-        # Keep command structure but normalize whitespace and quotes
+        # Extract meaningful parts of bash commands for matching
         command_match = re.search(r"command='([^']+)'", action)
         if command_match:
             command = command_match.group(1)
-            # Normalize whitespace but keep command structure
             command = re.sub(r'\s+', ' ', command.strip())
-            return f"{action_type}(command_normalized)"
+            
+            # Extract key command components
+            components = []
+            
+            # Check for common command patterns
+            if 'git clone' in command:
+                components.append('git_clone')
+                # Extract repo name if present
+                repo_match = re.search(r'git clone\s+[^\s]+\s+([^\s/]+)', command)
+                if repo_match:
+                    components.append(f"repo_{repo_match.group(1)}")
+            elif 'git init' in command or 'git add' in command or 'git commit' in command or 'git push' in command:
+                components.append('git_ops')
+            elif 'mvn' in command or 'maven' in command:
+                components.append('maven')
+                if 'install' in command or 'package' in command:
+                    components.append('build')
+            elif 'python' in command or 'pytest' in command or 'pip install' in command:
+                components.append('python')
+                if 'pytest' in command:
+                    components.append('test')
+                elif 'venv' in command or 'virtualenv' in command:
+                    components.append('venv')
+                elif 'install' in command:
+                    components.append('install')
+            elif 'bin/' in command and ('start' in command or 'sh start' in command):
+                components.append('start_server')
+            elif 'cd /workspace' in command or 'cd /' in command:
+                # Directory change - extract target directory
+                cd_match = re.search(r'cd\s+([^\s&|;]+)', command)
+                if cd_match:
+                    dir_path = cd_match.group(1)
+                    # Extract meaningful directory name
+                    dir_name = dir_path.split('/')[-1]
+                    if dir_name:
+                        components.append(f"cd_{dir_name}")
+            
+            # If no specific patterns matched, try to extract first significant word
+            if not components:
+                # Split command and look for first non-common word
+                words = command.split()
+                common_words = {'cd', '&&', '|', ';', 'source', 'export', 'mkdir', '-p'}
+                for word in words:
+                    if word not in common_words and len(word) > 2:
+                        components.append(f"cmd_{word}")
+                        break
+            
+            if components:
+                return f"{action_type}({'_'.join(components)})"
+            else:
+                return f"{action_type}(unknown)"
         return f"{action_type}()"
     
     elif action_type == 'send_message':
@@ -90,6 +139,7 @@ def normalize_action_for_matching(action: str) -> str:
 def action_similarity(action_1: str, action_2: str) -> float:
     """
     Calculate similarity between two actions using normalized comparison.
+    For execute_bash commands, requires exact match or very high similarity.
     """
     norm_1 = normalize_action_for_matching(action_1)
     norm_2 = normalize_action_for_matching(action_2)
@@ -98,8 +148,15 @@ def action_similarity(action_1: str, action_2: str) -> float:
     if norm_1 == norm_2:
         return 1.0
     
-    # Use SequenceMatcher for fuzzy matching
-    return SequenceMatcher(None, norm_1, norm_2).ratio()
+    # For execute_bash commands, require exact match (no fuzzy matching)
+    if norm_1.startswith('execute_bash(') and norm_2.startswith('execute_bash('):
+        return 0.0  # Different bash commands don't match
+    
+    # Use SequenceMatcher for fuzzy matching for other action types
+    similarity = SequenceMatcher(None, norm_1, norm_2).ratio()
+    
+    # For other action types, still allow fuzzy matching
+    return similarity
 
 def align_golden_to_agent(
     golden_path: List[str],
