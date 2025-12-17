@@ -1,0 +1,59 @@
+# White Agent Configuration
+
+agent:
+  # Redundancy detection settings
+  redundancy_window_size: 5  # Number of recent actions to check
+  redundancy_threshold: 2    # Number of times action can appear before flagged
+  
+  # Verification settings
+  enable_verification: true  # Enable action verification
+  strict_verification: false # Strict parameter matching (false allows some variation)
+  
+  # Reflection settings
+  enable_reflection: true     # Enable reflection after each step
+  reflection_depth: 3        # Number of recent steps to consider in reflection
+  
+  # Planning settings
+  use_golden_path: true      # Use golden paths for planning
+  allow_plan_updates: true   # Allow plan updates based on reflection
+  
+  # Execution settings
+  max_retries: 3             # Maximum retries for failed actions
+  retry_delay: 1.0           # Delay between retries (seconds)
+
+llm:
+  # Model configuration
+  model: "gpt-4"             # LLM model to use
+  temperature: 0.1           # Temperature for generation
+  max_tokens: 2000           # Maximum tokens per request
+  
+  # API configuration
+  api_key: null              # Set via environment variable
+  base_url: null             # Set via environment variable
+  timeout: 60                # Request timeout (seconds)
+
+evaluation:
+  # Evaluation settings
+  save_trajectory: true      # Save trajectory JSON
+  save_screenshots: false    # Save browser screenshots
+  save_state: true           # Save final state
+  
+  # Output paths
+  trajectory_path: "./trajectories"
+  screenshot_path: "./screenshots"
+  state_path: "./states"
+
+logging:
+  # Logging configuration
+  level: "INFO"             # Log level: DEBUG, INFO, WARNING, ERROR
+  log_file: null             # Log file path (null = console only)
+  log_trajectory: true       # Log trajectory to file
+
+performance:
+  # Performance optimization
+  batch_similar_actions: false  # Batch similar actions (future feature)
+  cache_common_patterns: true  # Cache common action patterns
+  parallel_execution: false    # Parallel execution (future feature)
+
+
+

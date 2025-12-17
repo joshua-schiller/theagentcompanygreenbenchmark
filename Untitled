@@ -1,0 +1,10 @@
+## Red Flags for AI-Generated Content:
+
+1. **Too many emojis** (🤖, ✅, ❌, 🎯, etc.) - especially in demo files
+2. **Overly polished formatting** - perfect tables, perfect structure
+3. **Very detailed explanations** - explaining every little thing
+4. **Professional marketing tone** - "This is a high-performance..."
+5. **References to non-existent files** - like FILE_REFERENCE.md mentioning QUESTION_RESPONSES.md
+6. **Too many code examples** - every concept illustrated with code
+7. **Perfect grammar and structure** - no typos, no casual language
+8. **Comprehensive coverage** - explaining things that don't need explanation

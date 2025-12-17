@@ -1,192 +1,166 @@
-# TheAgentCompany Green Agent
+# TheAgentCompany Green Agent Benchmark
 
-This repository contains the Green Agent implementation for TheAgentCompany benchmark, focusing on evaluating planning efficiency and resource-conscious behavior among AI agents.
+This project has two main parts: a Green Agent evaluator that scores how efficiently agents complete tasks, and a White Agent implementation that actually performs the tasks. The Green Agent compares agent trajectories to "golden paths" (optimal action sequences) to calculate efficiency scores.
 
-## Overview
+## What's This About?
 
-While the original TheAgentCompany benchmark evaluates task completion, our Green Agent evaluates **how efficiently** agents achieve goals by comparing their trajectories to "Golden Paths", which are optimal action sequences for each task.
+The original TheAgentCompany benchmark just checks if agents can complete tasks. This project adds a "Green Agent" evaluator that looks at HOW agents complete tasks - are they efficient? Do they waste steps? Do they follow optimal paths?
 
-## Features
-
-- **Path Similarity Scoring**: Compares agent trajectories to golden paths using sequence alignment
-- **Redundancy Detection**: Identifies and penalizes redundant or wasted actions
-- **Diagnostic Reports**: Provides detailed analysis comparing agent paths to optimal paths
-- **Modular Design**: Easy to extend with new tasks and golden paths
+We also built a White Agent that tries to be more efficient by planning ahead, detecting redundant actions, and tracking goals. It doesn't see the golden paths (that would be cheating), but it uses better decision-making to avoid common problems like getting stuck in loops or missing steps.
 
 ## Project Structure
 
-```
-theagentcompanygreenbenchmark/
-├── parser.py              # Parses trajectory JSON logs into standardized actions
-├── golden_paths.py        # Programmatic definitions of golden paths for all tasks
-├── scoring.py             # Efficiency scoring algorithm
-├── evaluator.py           # Main evaluation script
-├── refine_golden_paths.py # Helper script for refining golden paths
-├── run_evaluation.sh      # Helper script for end-to-end evaluation
-├── Makefile               # Make targets for common operations
-├── GRADER_GUIDE.md        # Detailed guide for graders
-├── golden_paths_descriptions.md # Descriptions of golden paths
-└── README.md              # This file
-```
+The main files:
 
-## Usage
+- `evaluator.py` - Main script that evaluates agent trajectories
+- `scoring.py` - The scoring algorithm (coverage, redundancy, path length, etc.)
+- `parser.py` - Converts raw trajectory JSON into standardized actions
+- `golden_paths.py` - Defines the optimal paths for each task
+- `white_agent_intelligent.py` - Our white agent implementation
+- `refine_golden_paths.py` - Helper script for refining golden paths
+- `run_evaluation.sh` - Shell script to run evaluations
+- `Makefile` - Convenience commands
 
-### For Graders
+## The Green Agent Evaluator
 
-**Quick Start**: See [GRADER_GUIDE.md](GRADER_GUIDE.md) for detailed instructions on running the evaluator after white-agent runs.
+The evaluator takes trajectory JSON files from agent runs and scores them based on:
 
-**Quick evaluation after TAC run:**
-```bash
-# Option 1: Using helper script
-./run_evaluation.sh /path/to/tac/outputs/results --output results.json
+- Coverage: How many golden path steps were completed (60% of score)
+- Order: Whether steps were done in the right sequence (15%)
+- Path length: Penalty if the agent took way more steps than needed (10%)
+- Redundancy: Penalty for repeating the same actions (15%)
 
-# Option 2: Using Makefile
-make evaluate TRAJECTORY_DIR=/path/to/tac/outputs/results
+### Running the Evaluator
 
-# Option 3: Direct Python command
-python evaluator.py /path/to/tac/outputs/results --output results.json --report
-```
-
-The evaluator automatically finds all `traj_*.json` files in the specified directory and can read directly from TAC output directories (mount paths or copied files).
-
-### Basic Usage
-
-Evaluate a single trajectory:
+After you have trajectory files from a white agent run, you can evaluate them:
 
 ```bash
+# Evaluate a single trajectory
 python evaluator.py traj_pm-schedule-meeting-1-image.json
+
+# Evaluate all trajectories in a directory
+python evaluator.py /path/to/trajectories/ --output results.json --report
+
+# Or use the helper script
+./run_evaluation.sh /path/to/trajectories --output results.json
+
+# Or use the Makefile
+make evaluate TRAJECTORY_DIR=/path/to/trajectories
 ```
 
-Evaluate all trajectories in a directory:
+The evaluator automatically finds all `traj_*.json` files in the directory. You can also use `--report` to get a detailed breakdown of what the agent did vs what it should have done.
+
+### Tasks Evaluated
+
+There are 10 tasks:
+
+1. pm-schedule-meeting-1 - Schedule meeting between two people
+2. sde-run-janusgraph - Set up and run JanusGraph server
+3. hr-new-grad-job-description-3 - Create job description
+4. sde-create-new-repo - Create new GitLab repository
+5. pm-send-hello-message - Send message to general channel
+6. finance-qualified-bill-ask-for-reimburse - Process reimbursement
+7. ds-janusgraph-exercise - Implement org chart in JanusGraph
+8. ml-generate-gradcam - Generate GradCAM visualization
+9. research-answer-questions-on-paper - Answer questions from paper
+10. qa-escalate-emergency - Escalate security issue
+
+### How Scoring Works
+
+1. The parser converts raw trajectory JSON into standardized actions like `execute_bash(command='...')`, `read_file(path='...')`, etc.
+
+2. Golden paths are defined in `golden_paths.py` - these are the optimal sequences for each task, manually written based on task requirements.
+
+3. The scoring algorithm aligns the agent's actions to the golden path and calculates:
+
+   - Coverage: percentage of golden path steps that were matched
+   - Order score: whether matched steps were in the right sequence
+   - Length efficiency: penalty if agent path is much longer than golden path
+   - Redundancy: detects repeated identical actions within a sliding window
+
+4. Final efficiency score is a weighted combination of these components.
+
+## The White Agent
+
+Our white agent implementation (`white_agent_intelligent.py`) tries to be more efficient without seeing the golden paths. The main improvements are:
+
+- **Task Analysis**: Extracts entities (people, files, URLs, commands) from the task description
+- **Planning**: Creates a complete plan upfront instead of reacting step-by-step
+- **Redundancy Detection**: Tracks recent actions and skips redundant ones to prevent loops
+- **Goal Tracking**: Extracts goals from the task and only finishes when all are achieved
+- **Task Classification**: Recognizes different task types (PM, SDE, HR, etc.) and uses appropriate patterns
+
+The agent doesn't use golden paths - it reasons from the task description. But it fixes common problems that baseline agents have:
+
+- Getting stuck sending the same message 25+ times
+- Stopping early before completing all requirements
+- Doing the wrong task entirely (like creating a Python project when it should set up JanusGraph)
+
+### How the White Agent Works
+
+1. **Task Analysis**: Reads `/instruction/task.md` and extracts entities (people mentioned, files to read, URLs to visit, commands to run)
+
+2. **Planning**: Based on the task type and entities, creates a complete plan of actions
+
+3. **Execution**: For each step:
+
+   - Checks if the action is redundant (already done recently)
+   - Executes the action
+   - Reflects on the result and tracks which goals were achieved
+
+4. **Completion**: Only finishes when all goals from the task are achieved
+
+The key insight is that you don't need to see the "answers" (golden paths) to be better - you just need better decision-making to avoid common failure modes.
+
+## Usage Examples
+
+### Evaluating Trajectories
+
+If you have trajectory files from a white agent run:
 
 ```bash
-python evaluator.py /path/to/trajectories/ --output results.json
-```
+# Single file
+python evaluator.py traj_pm-schedule-meeting-1-image.json --report
 
-### Helper Scripts
+# All files in a directory
+python evaluator.py /path/to/trajectories --output results.json
 
-**run_evaluation.sh**: End-to-end evaluation script
-```bash
+# Using the shell script
 ./run_evaluation.sh /path/to/trajectories --output results.json --report
 ```
 
-**Makefile**: Convenient targets for common operations
-```bash
-make evaluate TRAJECTORY_DIR=/path/to/trajectories
-make evaluate-single TRAJECTORY_FILE=traj_*.json
-make full-pipeline TRAJECTORY_DIR=/path/to/trajectories
-make list-tasks
-```
+### Output Format
 
-### Command-Line Options
-
-```bash
-python evaluator.py --help
-```
-
-Options:
-- `--task-name`: Specify task name explicitly (otherwise extracted from filename)
-- `--output`: Save results to JSON file
-- `--report`: Print detailed diagnostic report
-- `--list-tasks`: List all available task names
-
-
-## Tasks Evaluated
-
-The Green Agent evaluates efficiency for 10 tasks:
-
-1. **pm-schedule-meeting-1**: Schedule meeting between Emily Zhou and Liu Qiang
-2. **sde-run-janusgraph**: Set up and run JanusGraph server
-3. **hr-new-grad-job-description-3**: Create job description by gathering info
-4. **sde-create-new-repo**: Create new GitLab repository
-5. **pm-send-hello-message**: Send message to #general channel
-6. **finance-qualified-bill-ask-for-reimburse**: Process reimbursement request
-7. **ds-janusgraph-exercise**: Implement organizational chart in JanusGraph
-8. **ml-generate-gradcam**: Generate GradCAM visualization
-9. **research-answer-questions-on-paper**: Answer questions from research paper
-10. **qa-escalate-emergency**: Escalate security vulnerability
-
-## How It Works
-
-### 1. Parsing Trajectories
-
-The `parser.py` module converts raw trajectory JSON logs into standardized action strings:
-
-- `execute_bash(command='...')` - Terminal commands
-- `read_file(path='...')` - File reading
-- `write_file(path='...')` - File writing
-- `goto_url(url='...')` - Browser navigation
-- `send_message(recipient='...', content='...')` - Chat messages
-- `finish()` - Task completion
-
-### 2. Golden Paths
-
-Golden paths are defined in `golden_paths.py` as lists of standardized actions representing the optimal way to complete each task. These are manually curated based on:
-
-- Task requirements
-- Best practices
-- Minimal necessary steps
-
-### 3. Scoring Algorithm
-
-The scoring algorithm (`scoring.py`) calculates:
-
-- **Path Similarity** (0-1): How closely the agent path matches the golden path using sequence alignment
-- **Redundancy Penalty** (0-1): Penalty for duplicate or unnecessary actions
-- **Efficiency Score** (0-100): Overall score combining similarity and redundancy
-
-### 4. Evaluation
-
-The `evaluator.py` script:
-1. Parses the agent trajectory
-2. Retrieves the corresponding golden path
-3. Calculates efficiency scores
-4. Generates diagnostic reports
-
-## Extending the Evaluator
-
-### Adding a New Task
-
-1. **Define Golden Path in English**: Add to `golden_paths_english.md`
-2. **Create Programmatic Golden Path**: Add to `golden_paths.py`
-3. **Test**: Run evaluator on sample trajectories
-
-
-### Refining Golden Paths
-
-Use `refine_golden_paths.py` to help refine golden paths based on actual parsed outputs:
-
-```bash
-python refine_golden_paths.py
-```
-
-Then manually update `golden_paths.py` with refined paths.
-
-## Output Format
-
-Evaluation results are saved as JSON with the following structure:
+Results are saved as JSON:
 
 ```json
 {
   "task_name": "pm-schedule-meeting-1",
-  "trajectory_path": "traj_pm-schedule-meeting-1-image.json",
   "scores": {
     "efficiency_score": 75.50,
-    "path_similarity": 0.850,
+    "coverage": 0.850,
     "redundancy_penalty": 0.200,
-    "path_length_ratio": 1.20,
-    "agent_path_length": 6,
-    "golden_path_length": 5
+    "path_length_ratio": 1.20
   },
   "agent_path": [...],
-  "golden_path": [...],
-  "diagnostic_report": "..."
+  "golden_path": [...]
 }
 ```
 
+## Extending the Evaluator
+
+To add a new task:
+
+1. Define the golden path in `golden_paths_descriptions.md` (human-readable)
+2. Add the programmatic version to `golden_paths.py`
+3. Test with sample trajectories
+
+You can also use `refine_golden_paths.py` to help refine paths based on actual agent behavior:
+
+```bash
+python refine_golden_paths.py --task pm-schedule-meeting-1 --trajectory traj_pm-schedule-meeting-1-image.json
+```
 
 ## Team
 
 Team: Let's Get Sendyyy 67
-
-
