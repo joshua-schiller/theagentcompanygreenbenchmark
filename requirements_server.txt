@@ -1,0 +1,18 @@
+# Requirements for White Agent Server
+# Install with: pip install -r requirements_server.txt
+
+# A2A SDK for agent-to-agent communication
+a2a-sdk[http-server]>=0.3.8
+
+# Web server
+uvicorn>=0.37.0
+
+# Environment variables
+python-dotenv>=0.9.9
+
+# OpenHands (if using the intelligent agent with runtime)
+openhands>=0.1.0
+
+# LLM support (choose one or both)
+litellm>=1.0.0
+openai>=1.0.0
